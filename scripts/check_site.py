@@ -114,6 +114,8 @@ ET.parse(ROOT / "sitemap.xml")
 for private_suffix in (".docx", ".pdf", ".env"):
     assert not list(ROOT.rglob("*" + private_suffix)), private_suffix
 public_text = "\n".join(p.read_text(encoding="utf-8", errors="ignore") for p in ROOT.rglob("*") if p.suffix in (".html", ".xml", ".txt", ".css"))
+for page in ROOT.rglob('*.html'):
+    assert not re.search(r'[\u2196-\u2199]',page.read_text(encoding='utf-8')), f"Emoji-capable arrow in {page.name}"
 for disallowed_field in ("tel:", '"telephone"', '"streetAddress"', '"postalCode"', '"legalName"'):
     assert disallowed_field not in public_text, disallowed_field
 assert not re.search(r"\+966[\s\d-]{7,}", public_text), "Public phone number found"
