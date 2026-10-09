@@ -49,7 +49,11 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/samicof/athar-altakwin-site:sha-${{ github.sha }}
+          # :latest is what the my-stacks compose tracks (push here, owner presses Deploy in Dockhand);
+          # sha-<commit> stays for rollback by pinning the compose to a known build.
+          tags: |
+            ghcr.io/samicof/athar-altakwin-site:latest
+            ghcr.io/samicof/athar-altakwin-site:sha-${{ github.sha }}
           labels: |
             org.opencontainers.image.source=https://github.com/Samicof/athar-altakwin-site
             org.opencontainers.image.revision=${{ github.sha }}
